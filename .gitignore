@@ -1,0 +1,36 @@
+# Compiled object files
+*.o
+
+# Compiled executables
+*.com
+*.exe
+
+# Dynamic libraries
+*.dylib
+*.so
+*.dll
+
+# Static libraries
+*.a
+*.lib
+
+# Disk image files
+drives/
+
+# Build artifacts
+command/command.com
+osapi/libosapi.dylib
+
+# Editor/IDE files
+*.swp
+*.swo
+*~
+.DS_Store
+.vscode/
+.idea/
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
