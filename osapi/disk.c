@@ -10,13 +10,27 @@ internal int8 attached;
 public void dinit()
 {
     disk *dd[2];
+    block bl = {[0 ... Blocksize - 1] = (int8)0x06};
+    block in;
     attached = 0;
+    bool x;
+    int16 i;
 
     *dd = dattach(1);
     *(dd + 1) = dattach(2);
 
     dshow(*dd);
     printf("attached: %.02hhx\n", attached);
+
+    x = dwrite(*dd, bl, 0);
+    printf("x= %s\n", x ? "true" : "false");
+
+    bool y = dread(*dd, in, 1);
+    printf("y= %s\n", y ? "true" : "false");
+    for (int16 n = 0; n < Blocksize; n++)
+    {
+        printf("%d= %02hhx\n", n, in[n]);
+    }
 
     ddetach(*dd);
     ddetach(*(dd + 1));
@@ -40,6 +54,7 @@ internal void ddetach(disk *dd)
     if (!dd)
         return;
 
+    close(dd->fd);
     x = ~(dd->drive) & attached;
     attached = x;
 
@@ -70,7 +85,7 @@ internal disk *dattach(int8 drive)
         return (disk *)0;
     zero($1 dd, size);
     file = strnum(BasePath, drive);
-    tmp = open($c file, O_RDONLY);
+    tmp = open($c file, O_RDWR);
     if (tmp < 3)
     {
         free(dd);
